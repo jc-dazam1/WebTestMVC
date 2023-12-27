@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string EmployeeName { get; set; }
-        public int EmployeeSalary { get; set; }
+        public float EmployeeSalary { get; set; }
+        public float EmployeeAnualSalary { get; set; }
     }
 }
