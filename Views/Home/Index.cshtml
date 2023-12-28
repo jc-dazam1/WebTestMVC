@@ -1,8 +1,83 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Information</title>
+    <!-- Agregar enlaces a Bootstrap y jQuery -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2 class="text-center mb-4">Employee Information</h2>
+                <div class="input-group mb-3">
+                    <input type="text" id="employeeId" class="form-control" placeholder="Employee ID">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" onclick="searchEmployee()">Search</button>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Salary</th>
+                            <th>Annual Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTableBody">
+                        <!-- Resultado de la búsqueda se mostrará aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchEmployee() {
+            console.log("paso por aca");
+            var employeeId = document.getElementById('employeeId').value;
+
+            // Lógica para realizar la búsqueda y obtener datos de la API
+            var apiUrl = employeeId
+                ? 'http://dummy.restapiexample.com/api/v1/employee/' + employeeId
+                : 'http://dummy.restapiexample.com/api/v1/employees';
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Limpiar la tabla antes de mostrar nuevos resultados
+                    document.getElementById('employeeTableBody').innerHTML = '';
+
+                    if (Array.isArray(data)) {
+                        // Mostrar lista de empleados
+           
+                        data.forEach(employee => {
+                            displayEmployeeRow(employee);
+                        });
+                    } else {
+                        // Mostrar información del empleado único
+                        displayEmployeeRow(data);
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function displayEmployeeRow(employee) {
+            var row = document.createElement('tr');
+            row.innerHTML = `<td>${employee.id}</td>
+                    <td>${employee.employee_name}</td>
+                    <td>${employee.employee_salary}</td>
+                    <td>${employee.employee_salary * 12}</td>`;
+            document.getElementById('employeeTableBody').appendChild(row);
+        }
+    </script>
+
+</body>
+</html>

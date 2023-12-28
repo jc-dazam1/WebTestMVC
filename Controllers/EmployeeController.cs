@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Web.Http.Cors;
 using WebTestMVC.BusinessLogic;
 using WebTestMVC.DAL;
 
 namespace WebTestMVC.Controllers
 {
+    [EnableCors(origins: "https://localhost:7086", headers: "*", methods: "*")]
     public class EmployeeController : Controller
     {
         private readonly EmployeeDAL _employeeDAL;
